@@ -46,9 +46,11 @@ Requirements
 
 Greetings
 ------------
+IRC #trilobit #sid #extend     
 Slammer/Camelot for the inspiration
 
 -----
 
-Copyright (c) 2013 Markus Pyykkö (Mankeli/Laseboy + Hot Multimedia) released under the MIT license
+Copyright (c) 2013 Mankeli/Extend^LHB    
+released under the MIT license
 
