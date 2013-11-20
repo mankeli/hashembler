@@ -28,9 +28,8 @@ resolve forward references.
 Basicly the assembler does two passes, and runs all the C++ code
 with both passes. If you are doing something resource-intensive,
 you might perhaps want to look at the mainprg.m_pass variable.
-
-All the assembling happens currently to the segment "mainprg" but
-this will change.
+All assembling happens currently to the segment "mainprg" but
+a pseudo-op for controlling this will be provided in the future.
 
 Utility test_proc.sh takes .cpp files as parameters. It will
 preprocess the source, launch clang++ and finally assemble the program.
