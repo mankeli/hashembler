@@ -1,6 +1,8 @@
 #include "debugf.h"
 #include "hashembler.h"
 
+using namespace hashembler;
+
 segment_basic_c basicstub;
 segment_asm_c mainprg;
 

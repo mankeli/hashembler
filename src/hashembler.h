@@ -21,6 +21,9 @@ using std::ofstream;
 #include "segment_basic.h"
 #include "segment_asm.h"
 
+namespace hashembler
+{
+
 static void assemble(void (*func)(int))
 	{
 		cerr << "assembling..\n";
@@ -105,3 +108,4 @@ static void assemble(void (*func)(int))
 		}
 	}
 
+};

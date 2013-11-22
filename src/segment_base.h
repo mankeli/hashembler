@@ -1,6 +1,7 @@
 #pragma once
 
-#include "hashembler.h"
+namespace hashembler
+{
 
 class segment_c
 {
@@ -57,4 +58,6 @@ public:
 	{
 		return 0;
 	}
+};
+
 };

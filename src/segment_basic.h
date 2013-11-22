@@ -1,7 +1,12 @@
 #pragma once
 
+namespace hashembler
+{
+
 class segment_basic_c: public segment_c
 {
+
+
 public:
 	void begin(value_t pc, int pass)
 	{
@@ -52,4 +57,6 @@ public:
 	{
 		return m_pc;
 	}
+};
+
 };

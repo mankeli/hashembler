@@ -1,5 +1,8 @@
 #pragma once
 
+namespace hashembler
+{
+
 #include "opcodes.h"
 
 class segment_asm_c: public segment_c
@@ -79,5 +82,7 @@ public:
 	{
 		return m_pc;
 	}
+
+};
 
 };
