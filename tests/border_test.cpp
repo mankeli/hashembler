@@ -1,6 +1,5 @@
 #include "debugf.h"
-
-#include "assymblur.h"
+#include "hashembler.h"
 
 segment_basic_c basicstub;
 segment_asm_c mainprg;
@@ -72,7 +71,7 @@ void genis(int pass)
 
 int main()
 {
-	assymblur::assemble(genis);
+	assemble(genis);
 
 /*
 	cerr << "\n\nlets hear the results:\n";
@@ -84,5 +83,5 @@ int main()
 	segs.push_back(&basicstub);
 	segs.push_back(&mainprg);
 
-	assymblur::make_prg("border_test.prg", 0x0801, segs);
+	make_prg("border_test.prg", 0x0801, segs);
 }
