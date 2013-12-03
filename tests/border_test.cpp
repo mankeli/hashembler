@@ -6,7 +6,7 @@ using namespace hashembler;
 segment_basic_c basicstub;
 segment_asm_c mainprg;
 
-void rutiini()
+void hook_to_irq()
 {
 	inc 0xd020
 
@@ -20,21 +20,43 @@ void rutiini()
 	lda #((§irq_routine >> 8) & 0xFF)
 	sta 0x315
 
+
 	rts
 }
 
 void gen_irq_routine()
 {
-	§irq_routine = §*;
+	§irq_routine:
 	
-	§top_wait_loop = §*;
+	§top_wait_loop:
 	bit 0xd011
-	bmi §top_wait_loop
+	bpl §top_wait_loop
 
-	§bottom_wait_loop = §*;
+	§bottom_wait_loop:
 	bit 0xd011
-	bpl §bottom_wait_loop
+	bmi §bottom_wait_loop
 
+	§xscroll = §* + 1;
+	ldx #0x08
+	dex
+	bmi §move_datas
+
+	stx §xscroll
+	txa
+	and #0x10
+	sta 0xd011
+
+
+	jmp §go_back
+
+§move_datas:
+	jmp §go_back
+
+	ldx #0x08
+	stx §xscroll
+	txa
+	and #0x10
+	sta 0xd011
 
 	inc 0xd020
 
@@ -54,6 +76,7 @@ void gen_irq_routine()
 
 	dec 0xd020
 
+§go_back:
 	§jmp_mod = §* + 1;
 	jmp 0x1000
 }
@@ -62,12 +85,13 @@ void genis(int pass)
 {
 	basicstub.begin(0x801, pass);
 
-	basicstub.add_sys(666, 0x1000);
+	basicstub.add_sys(666, §program_start);
 	basicstub.add_end();
 
 	mainprg.begin(0x1000, pass);
 
-	rutiini();
+	§program_start = §*;
+	hook_to_irq();
 	gen_irq_routine();
 }
 

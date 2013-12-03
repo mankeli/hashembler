@@ -12,8 +12,15 @@ for line in fileinput.input():
 
 	line = re.match("^\s*(.*?)\s*(//.*)?$", line).group(1)
 
+	is_this_label = False
+	if re.match("^^§[\w]+\:$", line):
+		is_this_label = True
+
 	line = re.sub('§([\w]+)', 'mainprg.get_variable("\g<1>")', line)
 	line = re.sub('§\*', 'mainprg.get_pos()', line)
+
+	if (is_this_label):
+		line=line[:-1]+";"
 
 	# forgive me: i didn't bother to invent proper regexes. this will do for now
 
@@ -118,6 +125,8 @@ for line in fileinput.input():
 
 #modelist = ['imp', 'imm', 'zp', 'izx', 'izy', 'zpx', 'zpy', 'rel', 'abs', 'abx', 'aby', 'ind' ]
 
+	if (is_this_label):
+		print(line)
 	if (is_this_bug):
 		print("error", file=sys.stderr)
 		print(line, "----> ", end='', file=sys.stderr)

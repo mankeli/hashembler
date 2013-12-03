@@ -40,7 +40,7 @@ public:
 		static value_t placeholder_hack;
 		return placeholder_hack;*/
 
-		variables.push_back(variable_c(mulkku, 0));
+		variables.push_back(variable_c(mulkku, get_pos()));
 		return variables.back().m_value;
 	}
 
