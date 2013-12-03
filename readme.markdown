@@ -40,8 +40,8 @@ Requirements
 ------------
 
  - Bash shell for test_proc.sh
- - C++11 compiler (tested with clang++ 3.2)
- - Python 3.2
+ - C++11 compiler (tested with clang++ 3.2 and 4.1)
+ - Python 3 (tested with 3.2 and 3.3)
 
 Greetings
 ------------
