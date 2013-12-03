@@ -1,5 +1,5 @@
-LHB Assymblur
-=============
+LHB Hashembler
+==============
 a 6502 assembler with a C++ preprocessor
 
 Introduction
