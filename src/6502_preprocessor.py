@@ -20,7 +20,7 @@ for line in fileinput.input():
 	line = re.sub('§\*', 'mainprg.get_pos()', line)
 
 	if (is_this_label):
-		line=line[:-1]+";"
+		line=line[:-1]+" = mainprg.get_pos();"
 
 	# forgive me: i didn't bother to invent proper regexes. this will do for now
 
@@ -77,6 +77,7 @@ for line in fileinput.input():
 				idx = "x"
 			else:
 				operand = ptr_m.group(1)
+				idx = "y"
 
 	# decide addrmode from these parameters
 
@@ -127,11 +128,11 @@ for line in fileinput.input():
 
 	if (is_this_label):
 		print(line)
-	if (is_this_bug):
-		print("error", file=sys.stderr)
-		print(line, "----> ", end='', file=sys.stderr)
-		print([is_this_op, op, zp, ptr, idx, imm, operand, addrmode], file=sys.stderr)
-		print(modecodes[op], file=sys.stderr)
+	elif (is_this_bug):
+		print("#error \"", end="")
+		print(line, "----> ", end="")
+		print([is_this_op, op, zp, ptr, idx, imm, operand, addrmode], end="")
+		print(modecodes[op], "\"", end="")
 	elif (is_this_op):
 		if (len(operand) == 0):
 			operand = "0"

@@ -38,7 +38,7 @@ static void assemble(void (*func)(int))
 
 	static void make_prg(string fn, value_t loadaddr, list<segment_c *> segs)
 	{
-		ofstream file(fn, ios::binary);
+		ofstream file(fn.c_str(), ios::binary);
 		value_t curpc = loadaddr;
 
 		// detect segment overlaps more wisely

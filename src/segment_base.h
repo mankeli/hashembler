@@ -32,15 +32,14 @@ public:
 		for (auto &it: variables)
 		{
 			if (it.m_name == mulkku)
+			{
+				cerr << f("var '%s' = 0x%08X", it.m_name.c_str(), it.m_value) << "\n";
 				return it.m_value;
+			}
 		}
-		cerr << "oops! cannot find " << mulkku << "\n";
+		cerr << "oops! cannot find " << mulkku << ", setting to 0xDEADFACE\n";
 
-/*
-		static value_t placeholder_hack;
-		return placeholder_hack;*/
-
-		variables.push_back(variable_c(mulkku, get_pos()));
+		variables.push_back(variable_c(mulkku, 0xDEADFACE));
 		return variables.back().m_value;
 	}
 
