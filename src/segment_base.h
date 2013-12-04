@@ -22,6 +22,10 @@ public:
 		m_pass = pass;
 		m_datapos = 0;
 
+//		void set_segment(segment_c *seg);
+
+		set_segment(this);
+
 		// TODO: make this change size in a better way
 		data.resize(65536);
 	}
@@ -56,6 +60,11 @@ public:
 	virtual value_t get_pos()
 	{
 		return 0;
+	}
+
+	virtual void add_statement(string opname, string adrname, value_t operand)
+	{
+		printf("i'm sorry but this doesn't work. sorry also that i'm so hackish :-D\n");
 	}
 };
 

@@ -16,11 +16,13 @@ for line in fileinput.input():
 	if re.match("^^§[\w]+\:$", line):
 		is_this_label = True
 
-	line = re.sub('§([\w]+)', 'mainprg.get_variable("\g<1>")', line)
-	line = re.sub('§\*', 'mainprg.get_pos()', line)
+	line = re.sub('§([\w]+)\.([\w]+)', '\g<1>.get_variable("\g<2>")', line)
+	line = re.sub('§([\w]+)', '__current_seg->get_variable("\g<1>")', line)
+	line = re.sub('§([\w]+)\.\*', '\g<1>.get_pos()', line)
+	line = re.sub('§\*', '__current_seg->get_pos()', line)
 
 	if (is_this_label):
-		line=line[:-1]+" = mainprg.get_pos();"
+		line=line[:-1]+" = __current_seg->get_pos();"
 
 	# forgive me: i didn't bother to invent proper regexes. this will do for now
 
@@ -136,7 +138,7 @@ for line in fileinput.input():
 	elif (is_this_op):
 		if (len(operand) == 0):
 			operand = "0"
-		print('mainprg.add_statement("' + op + '", "' + addrmode + '", ' + operand + ');')
+		print('__current_seg->add_statement("' + op + '", "' + addrmode + '", ' + operand + ');')
 	else:
 		print(line)
 	#pprint(modes)

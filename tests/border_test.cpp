@@ -4,19 +4,21 @@
 using namespace hashembler;
 
 segment_basic_c basicstub;
+segment_asm_c initprg;
 segment_asm_c mainprg;
 
 void hook_to_irq()
 {
+	§program_start:
 
 	lda 0x314
-	sta §jmp_mod + 0
+	sta §mainprg.jmp_mod + 0
 	lda 0x315
-	sta §jmp_mod + 1
+	sta §mainprg.jmp_mod + 1
 
-	lda #((§irq_routine >> 0) & 0xFF)
+	lda #((§mainprg.irq_routine >> 0) & 0xFF)
 	sta 0x314
-	lda #((§irq_routine >> 8) & 0xFF)
+	lda #((§mainprg.irq_routine >> 8) & 0xFF)
 	sta 0x315
 
 	rts
@@ -25,6 +27,23 @@ void hook_to_irq()
 void gen_irq_routine()
 {
 	§irq_routine:
+
+	§prescaler_1 = §* + 1;
+	lda #0x00
+	beq §pos1
+	dec §prescaler_1
+	jmp §go_back
+§pos1:
+
+	§prescaler_2 = §* + 1;
+	lda #0x20
+	sta §prescaler_1
+	beq §pos2
+
+	dec §prescaler_2
+§pos2:
+
+
 
 	§top_wait_loop:
 	bit 0xd011
@@ -41,7 +60,6 @@ void gen_irq_routine()
 	bmi §move_datas
 
 	txa
-	and #0x07
 	sta 0xd016
 
 	jmp §go_back
@@ -51,8 +69,6 @@ void gen_irq_routine()
 	ldx #0x07
 	stx §xscroll
 	stx 0xd016
-
-	inc 0xd020
 
 	int x,y;
 	for (y = 0; y < 25; y++)
@@ -75,8 +91,6 @@ void gen_irq_routine()
 
 §no_cursor_wrap:
 
-	dec 0xd020
-
 §go_back:
 	§jmp_mod = §* + 1;
 	jmp 0x1000
@@ -85,14 +99,13 @@ void gen_irq_routine()
 void genis(int pass)
 {
 	basicstub.begin(0x801, pass);
-
-	basicstub.add_sys(666, §program_start);
+	basicstub.add_sys(666, §initprg.program_start);
 	basicstub.add_end();
 
-	mainprg.begin(0x1000, pass);
-
-	§program_start = §*;
+	initprg.begin(0x1000, pass);
 	hook_to_irq();
+
+	mainprg.begin(0x1050, pass);
 	gen_irq_routine();
 }
 
@@ -102,6 +115,7 @@ int main()
 
 	list<segment_c *> segs;
 	segs.push_back(&basicstub);
+	segs.push_back(&initprg);
 	segs.push_back(&mainprg);
 
 	make_prg("border_test.prg", 0x0801, segs);
