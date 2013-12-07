@@ -66,6 +66,21 @@ public:
 	{
 		printf("i'm sorry but this doesn't work. sorry also that i'm so hackish :-D\n");
 	}
+
+	void add_byte(uint8_t byte)
+	{
+		data[m_datapos] = byte;
+
+		m_datapos++;
+		m_pc++;
+	}
+
+	void align_to_page()
+	{
+		int bytesleft = 0xFF - (m_pc & 0xFF);
+		m_datapos += bytesleft;
+		m_pc += bytesleft;
+	}
 };
 
 };

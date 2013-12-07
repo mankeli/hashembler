@@ -17,8 +17,8 @@ for line in fileinput.input():
 		is_this_label = True
 
 	line = re.sub('§([\w]+)\.([\w]+)', '\g<1>.get_variable("\g<2>")', line)
-	line = re.sub('§([\w]+)', '__current_seg->get_variable("\g<1>")', line)
 	line = re.sub('§([\w]+)\.\*', '\g<1>.get_pos()', line)
+	line = re.sub('§([\w]+)', '__current_seg->get_variable("\g<1>")', line)
 	line = re.sub('§\*', '__current_seg->get_pos()', line)
 
 	if (is_this_label):
