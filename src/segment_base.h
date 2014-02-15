@@ -75,6 +75,18 @@ public:
 		m_pc++;
 	}
 
+	void add_string(char *str)
+	{
+		int len = strlen(str) + 1;
+		int i;
+		for (i = 0; i < len; i++)
+		{
+			data[m_datapos] = str[i];
+			m_datapos++;
+			m_pc++;
+		}
+	}
+
 	void align_to_page()
 	{
 		int bytesleft = 0xFF - (m_pc & 0xFF);

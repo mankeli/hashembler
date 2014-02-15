@@ -23,6 +23,9 @@ public:
 		000a = line number
 		9e = sys token?
 		*/
+
+		printf("address is %X\n", addr);
+
 		value_t nextaddr = m_pc+0x0b;
 
 		data[m_datapos + 0] = getbyte(nextaddr, 0);
