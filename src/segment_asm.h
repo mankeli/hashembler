@@ -4,10 +4,13 @@ namespace hashembler
 {
 
 #include "opcodes.h"
+#include "opcodemacros.h"
 
 class segment_asm_c: public segment_c
 {
 public:
+
+
 
 	void add_statement(string opname, string adrname, value_t operand)
 	{
@@ -26,7 +29,7 @@ public:
 
 		//modelist = ['imp', 'imm', 'zp', 'izx', 'izy', 'zpx', 'zpy', 'rel', 'abs', 'abx', 'aby', 'ind' ]
 
-		if (m_pass > 0 && data[m_datapos] != opcode)
+		if (g_pass > 0 && data[m_datapos] != opcode)
 		{
 			cerr << f("hmm. opcode mismatch at pc 0x%04X\n", m_pc);
 			return;
@@ -76,11 +79,6 @@ public:
 		tmp += segment_c::dump();
 
 		return tmp;
-	}
-
-	value_t get_pos()
-	{
-		return m_pc;
 	}
 
 };

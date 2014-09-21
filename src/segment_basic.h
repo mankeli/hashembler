@@ -8,11 +8,6 @@ class segment_basic_c: public segment_c
 
 
 public:
-	void begin(value_t pc, int pass)
-	{
-		segment_c::begin(pc, pass);
-	}
-
 	void add_sys(value_t linenumber, value_t addr)
 	{
 				/*
@@ -54,11 +49,6 @@ public:
 		data[m_datapos + 1] = 0;
 		m_pc += 2;
 		m_datapos += 2;
-	}
-
-	value_t get_pos()
-	{
-		return m_pc;
 	}
 };
 

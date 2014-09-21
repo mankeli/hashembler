@@ -13,13 +13,11 @@ public:
 	value_t m_startpc;
 	value_t m_pc;
 	value_t m_datapos;
-	int m_pass;
 
-	virtual void begin(value_t pc, int pass)
+	virtual void begin(value_t pc)
 	{
 		m_startpc = pc;
 		m_pc = pc;
-		m_pass = pass;
 		m_datapos = 0;
 
 //		void set_segment(segment_c *seg);
@@ -37,11 +35,13 @@ public:
 		{
 			if (it.m_name == mulkku)
 			{
-				cerr << f("var '%s' = 0x%08X", it.m_name.c_str(), it.m_value) << "\n";
+				// cerr << f("var '%s' = 0x%08X", it.m_name.c_str(), it.m_value) << "\n";
 				return it.m_value;
 			}
 		}
-		cerr << "oops! cannot find " << mulkku << ", setting to 0xDEADFACE\n";
+
+		if (g_pass == 1)
+			cerr << "oops! cannot find " << mulkku << ", defaulting to 0xDEADFACE\n";
 
 		variables.push_back(variable_c(mulkku, 0xDEADFACE));
 		return variables.back().m_value;
@@ -59,7 +59,12 @@ public:
 
 	virtual value_t get_pos()
 	{
-		return 0;
+		return m_pc;
+	}
+
+	virtual value_t get_size()
+	{
+		return m_datapos;
 	}
 
 	virtual void add_statement(string opname, string adrname, value_t operand)
@@ -75,7 +80,7 @@ public:
 		m_pc++;
 	}
 
-	void add_string(char *str)
+	void add_string(const char *str)
 	{
 		int len = strlen(str) + 1;
 		int i;
@@ -89,9 +94,33 @@ public:
 
 	void align_to_page()
 	{
-		int bytesleft = 0xFF - (m_pc & 0xFF);
+		int bytesleft = 0x100 - (m_pc & 0xFF);
 		m_datapos += bytesleft;
 		m_pc += bytesleft;
+	}
+
+	bool load_prg(string fn, bool beginnew)
+	{
+		FILE *fp = fopen(fn.c_str(), "rb");
+		if (!fp)
+			return true;
+		uint16_t load_addr;
+		fread(&load_addr, 2, 1, fp);
+		// cerr << f("load address: %04X\n", load_addr);
+		if (beginnew)
+		{
+			begin(load_addr);
+			get_variable("start") = load_addr;
+		}
+
+		get_variable(fn) = m_pc;
+
+		while(!feof(fp))
+		{
+			add_byte(fgetc(fp));
+		}
+		fclose(fp);
+		return false;
 	}
 };
 

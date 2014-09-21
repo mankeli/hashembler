@@ -1,7 +1,7 @@
 #pragma once 
 
 #include <iostream>
-extern std::ostream std::cerr;
+// extern std::ostream std::cerr;
 using std::cerr;
 #include <stdio.h>
 

@@ -17,8 +17,22 @@ using std::ofstream;
 #include "datatypes.h"
 #include "utils.h"
 
+// maybe these should be functions instead?
+#define SETSEG(_s) { set_segment(&_s); }
+#define SEG (*__current_seg)
+#define S(_n) S(_n)
+#define LABEL(_n) (__current_seg->get_variable(_n))
+#define L(_n) LABEL(_n)
+#define PC() (__current_seg->m_pc)
+#define LPC(_n) { LABEL(_n) = PC(); }
+#define SEGLABEL(_s,_n) (_s.get_variable(_n))
+#define SEGPC(_s) (_s.m_pc)
+#define OP(_code, _addr, _val) { __current_seg->add_statement(_code, _addr, _val); }
+
+
 namespace hashembler
 {
+	int g_pass;
 
 class segment_c;
 
@@ -37,15 +51,16 @@ static void set_segment(segment_c *seg)
 namespace hashembler
 {
 
-static void assemble(void (*func)(int))
+static void assemble(void (*func)(void))
 {
 	cerr << "assembling..\n";
 	int i;
 	for (i = 0; i < 2; i++)
 	{
-		cerr << f("\nnow entering pass %i\n", i);;
-		func(i);
-		cerr << "\n";
+		cerr << f("now entering pass %i\n", i);;
+		g_pass = i;
+		func();
+	//	cerr << "\n";
 	}
 }
 
@@ -72,7 +87,7 @@ static void make_prg(string fn, value_t loadaddr, list<segment_c *> segs)
 			value_t lowest_startpc = 0xFFFFFFFF;
 			segment_c *lowest_seg = NULL;
 
-			cerr << f("we are at %X. finding next seg\n", curpc);
+			// cerr << f("we are at %X. finding next seg\n", curpc);
 			for (auto &it: segs)
 			{
 				if (it)
@@ -92,7 +107,7 @@ static void make_prg(string fn, value_t loadaddr, list<segment_c *> segs)
 
 			if (lowest_startpc == curpc)
 			{
-				cerr << f("writing %i bytes\n", lowest_seg->m_datapos);
+				// cerr << f("writing %i bytes\n", lowest_seg->m_datapos);
 				file.write((const char *)lowest_seg->data.data(), lowest_seg->m_datapos);
 				curpc += lowest_seg->m_datapos;
 
@@ -117,7 +132,7 @@ static void make_prg(string fn, value_t loadaddr, list<segment_c *> segs)
 			}
 
 		}
-		cerr << f("writing ended at %X\n", curpc);
+		//cerr << f("writing ended at %X\n", curpc);
 		file.close();
 	}
 }
