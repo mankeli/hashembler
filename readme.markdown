@@ -9,7 +9,8 @@ It is your normal everyday 6502 assembler, but with fully-featured C++11
 compiler as it's preprocessor.
 
 Currently the assembler portion is implemented as a C++ header file,
-and a Python script is used to convert standard 6502 syntax into function calls.
+and ~~a python script is used to convert standard 6502 syntax into function calls.~~
+CPP macros are used to convert 6502 syntax into function calls.
 
 Several parts of the design are subject to change.
 
@@ -21,35 +22,26 @@ Basicly all 6502 mnemonics _should_ work as expected,
 and any normal c++ expression and/or function call can be used
 inside the 6502 code.
 
-There's also new "variable" type, which used with syntax §variable.
-This is basicly a label which works between passes, and is used to
-resolve forward references.
-
 Basicly the assembler does two passes, and runs all the C++ code
 with both passes. If you are doing something resource-intensive,
-you might perhaps want to look at the mainprg.m_pass variable.
-All assembling happens currently to the segment "mainprg" but
-a pseudo-op for controlling this will be provided in the future.
+you might perhaps want to look at the hashembler::g_pass variable.
 
-Utility test_proc.sh takes .cpp files as parameters. It will
-preprocess the source, launch clang++ and finally assemble the program.
-
-	./test_proc.sh tests/border_test.cpp
+Compilation is done by including the hashembler.h and using your
+favourite C++11 compiler.
 
 Requirements
 ------------
 
- - Bash shell for test_proc.sh
  - C++11 compiler (tested with clang++ 3.2 and 4.1)
- - Python 3 (tested with 3.2 and 3.3)
 
 Greetings
 ------------
-IRC #trilobit #sid #extend     
-Slammer/Camelot for the inspiration
+IRC #trilobit #extend     
+Slammer/Camelot for the amazing KickAssembler. It's macro syntax was the
+inspiration for this.
 
 -----
 
-Copyright (c) 2013 Mankeli/Extend^LHB    
+Copyright (c) 2013-2014 Mankeli/Extend^LHB    
 released under the MIT license
 
