@@ -99,6 +99,13 @@ public:
 		m_pc += bytesleft;
 	}
 
+	void reserve(int amount)
+	{
+		m_datapos += amount;
+		m_pc += amount;
+	}
+
+
 	bool load_prg(string fn, bool beginnew)
 	{
 		FILE *fp = fopen(fn.c_str(), "rb");
