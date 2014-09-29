@@ -28,7 +28,7 @@ using std::ofstream;
 #define SEGLABEL(_s,_n) (_s.get_variable(_n))
 #define SEGPC(_s) (_s.m_pc)
 #define OP(_code, _addr, _val) { __current_seg->add_statement(_code, _addr, _val); }
-
+#define B(_n) {__current_seg->add_byte(_n); }
 
 namespace hashembler
 {
