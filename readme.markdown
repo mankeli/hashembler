@@ -17,7 +17,7 @@ Several parts of the design are subject to change.
 
 Usage
 -----
-Look at files in tests/ for an example.
+Look at files in examples/ for an example.
 Basicly all 6502 mnemonics _should_ work as expected,
 and any normal c++ expression and/or function call can be used
 inside the 6502 code.
@@ -33,10 +33,11 @@ Requirements
 ------------
 
  - C++11 compiler (tested with clang++ 3.2 and 4.1)
+ - Bash (just hash.sh script)
 
 Greetings
 ------------
-IRC #trilobit #extend     
+IRC #LHB
 Slammer/Camelot for the amazing KickAssembler. It's macro syntax was the
 inspiration for this.
 
