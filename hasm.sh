@@ -1,6 +1,7 @@
 #/bin/bash
 set -e
-
-clang++ -o /tmp/hasm -std=c++11 "$@" -I/Users/mankeli/code/hashembler/src/
-/tmp/hasm
-rm /tmp/hasm
+HASMROOT=`dirname $0`
+HASMEXEC=/tmp/hasm
+g++ -o $HASMEXEC -std=c++11 "$@" -I$HASMROOT/src/
+$HASMEXEC
+rm $HASMEXEC
