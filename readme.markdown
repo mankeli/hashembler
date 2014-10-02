@@ -35,9 +35,13 @@ Requirements
  - C++11 compiler (tested with clang++ 3.2 and 4.1)
  - Bash (just hash.sh script)
 
+Contact
+------------
+manqeloque / #LHB @ Ircnet
+
 Greetings
 ------------
-IRC #LHB
+
 Slammer/Camelot for the amazing KickAssembler. It's macro syntax was the
 inspiration for this.
 

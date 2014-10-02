@@ -29,6 +29,8 @@ using std::ofstream;
 #define SEGPC(_s) (_s.m_pc)
 #define OP(_code, _addr, _val) { __current_seg->add_statement(_code, _addr, _val); }
 #define B(_n) {__current_seg->add_byte(_n); }
+#define PAGE {__current_seg->align_to_page(); }
+#define PCNOW(_txt) {	printf("%s: %04X\n", _txt, PC()); }
 
 namespace hashembler
 {
@@ -59,6 +61,7 @@ static void assemble(void (*func)(void))
 	{
 		cerr << f("now entering pass %i\n", i);;
 		g_pass = i;
+		srand(0);
 		func();
 	//	cerr << "\n";
 	}
