@@ -82,7 +82,7 @@ public:
 
 	void add_string(const char *str)
 	{
-		int len = strlen(str) + 1;
+		int len = strlen(str);
 		int i;
 		for (i = 0; i < len; i++)
 		{
