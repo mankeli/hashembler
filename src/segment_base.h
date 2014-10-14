@@ -28,6 +28,12 @@ public:
 		data.resize(65536);
 	}
 
+	value_t &get_variable_idx(string mulkku, int extra)
+	{
+		char tmpstr[1024];
+		sprintf(tmpstr,"%s%i", mulkku.c_str(), extra);
+		return get_variable(tmpstr);
+	}
 
 	value_t &get_variable(string mulkku)
 	{
@@ -36,12 +42,15 @@ public:
 			if (it.m_name == mulkku)
 			{
 				// cerr << f("var '%s' = 0x%08X", it.m_name.c_str(), it.m_value) << "\n";
+				if (it.m_value == 0xDEADFACE)
+					g_pass_vars_left++;
 				return it.m_value;
 			}
 		}
 
-		if (g_pass == 1)
-			cerr << "oops! cannot find " << mulkku << ", defaulting to 0xDEADFACE\n";
+//		if (g_pass == 1)
+//			cerr << "oops! cannot find " << mulkku << ", defaulting to 0xDEADFACE\n";
+		g_pass_vars_left++;
 
 		variables.push_back(variable_c(mulkku, 0xDEADFACE));
 		return variables.back().m_value;

@@ -30,10 +30,17 @@ for line in fileinput.input():
 
 	opcodes.add(opname)
 
+	opnameup = opname.upper()
+
+	if (addrmodename == 'imp'):
+		if (opname == '')
+
 	# print("{{ 0x{0}, \"{1}\", \"{2}\", {3} }}, ".format(opnum, opname, addrmodename, addrmode))
 	# print("#define {0}.{1} (_val) {{ __current_seg->add_statement(\"{0}\", \"{1}\", _val); }} ".format(opname, addrmodename, opname, addrmodename))
 	if (addrmodename == 'imp'):
-		print("#define {0}a() {{ __current_seg->add_statement(\"{1}\", \"imp\", 0); }}".format(opname.upper(), opname))
+		print("#define {0}() {{ __current_seg->add_statement(\"{1}\", \"imp\", 0); }}".format(opname.upper(), opname))
+	if (addrmodename == 'impa'):
+		print("#define {0}a() {{ __current_seg->add_statement(\"{1}\", \"imp\", 0); }}".format(opnameup, opname))
 	elif (addrmodename == 'imm'):
 		print("#define {0}i(_val) {{ __current_seg->add_statement(\"{1}\", \"imm\", _val); }}".format(opname.upper(), opname))
 	elif (addrmodename == 'rel'):

@@ -21,10 +21,13 @@ using std::ofstream;
 #define SETSEG(_s) { set_segment(&_s); }
 #define SEG (*__current_seg)
 #define S(_n) S(_n)
-#define LABEL(_n) (__current_seg->get_variable(_n))
-#define L(_n) LABEL(_n)
+#define L(_n) (__current_seg->get_variable(_n))
+#define LPC(_n) { L(_n) = PC(); }
+#define Lx(_n,_i) (__current_seg->get_variable_idx(_n, _i))
+#define LPCx(_n,_i) { Lx(_n,_i) = PC(); }
+
 #define PC() (__current_seg->m_pc)
-#define LPC(_n) { LABEL(_n) = PC(); }
+
 #define SEGLABEL(_s,_n) (_s.get_variable(_n))
 #define SEGPC(_s) (_s.m_pc)
 #define OP(_code, _addr, _val) { __current_seg->add_statement(_code, _addr, _val); }
@@ -35,6 +38,7 @@ using std::ofstream;
 namespace hashembler
 {
 	int g_pass;
+	int g_pass_vars_left;
 
 class segment_c;
 
@@ -57,13 +61,17 @@ static void assemble(void (*func)(void))
 {
 	cerr << "assembling..\n";
 	int i;
-	for (i = 0; i < 2; i++)
+	for (i = 0;; i++)
 	{
 		cerr << f("now entering pass %i\n", i);;
 		g_pass = i;
+		g_pass_vars_left = 0;
 		srand(0);
 		func();
 	//	cerr << "\n";
+		cerr << f("issues left: %i\n", g_pass_vars_left);
+		if (g_pass_vars_left == 0)
+			break;
 	}
 }
 
@@ -76,6 +84,7 @@ static void make_prg(string fn, value_t loadaddr, list<segment_c *> segs)
 	// detect segment overlaps more wisely
 
 	cerr << "writing results to " << fn << "\n";
+	cerr << f("writing begins at %X\n", curpc);
 
 	if (file.is_open())
 	{
@@ -135,7 +144,7 @@ static void make_prg(string fn, value_t loadaddr, list<segment_c *> segs)
 			}
 
 		}
-		//cerr << f("writing ended at %X\n", curpc);
+		cerr << f("writing ended at %X\n", curpc);
 		file.close();
 	}
 }

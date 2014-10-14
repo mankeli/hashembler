@@ -51,12 +51,13 @@ public:
 
 			if (diff > 127 || diff < -128)
 			{
-				cerr << f("branch är liian kaukana %04X to %04X\n", operand, m_pc);
+//				cerr << f("branch är liian kaukana %04X to %04X\n", operand, m_pc);
+				diff = 0;
 			}
 
 			if (diff < 0)
 			{
-				diff = 0x100+diff;
+				diff = 0x100 + diff;
 			}
 			data[m_datapos + 1] = diff & 0xFF;
 		}
