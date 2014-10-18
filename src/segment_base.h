@@ -101,6 +101,17 @@ public:
 		}
 	}
 
+	void add_string(const char *str, int len)
+	{
+		int i;
+		for (i = 0; i < len; i++)
+		{
+			data[m_datapos] = str[i];
+			m_datapos++;
+			m_pc++;
+		}
+	}
+
 	void align_to_page()
 	{
 		int bytesleft = 0x100 - (m_pc & 0xFF);
