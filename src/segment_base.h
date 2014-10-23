@@ -3,6 +3,8 @@
 namespace hashembler
 {
 
+typedef char (*enc_f)(char);
+
 class segment_c
 {
 public:
@@ -91,22 +93,38 @@ public:
 
 	void add_string(const char *str)
 	{
+		add_string(str, (enc_f)NULL);
+	}
+
+	void add_string(const char *str, int len)
+	{
+		add_string(str, len, (enc_f)NULL);
+	}
+
+	void add_string(const char *str, enc_f conv)
+	{
 		int len = strlen(str) + 1;
 		int i;
 		for (i = 0; i < len; i++)
 		{
-			data[m_datapos] = str[i];
+			if (conv)
+				data[m_datapos] = conv(str[i]);
+			else
+				data[m_datapos] = str[i];
 			m_datapos++;
 			m_pc++;
 		}
 	}
 
-	void add_string(const char *str, int len)
+	void add_string(const char *str, int len, enc_f conv)
 	{
 		int i;
 		for (i = 0; i < len; i++)
 		{
-			data[m_datapos] = str[i];
+			if (conv)
+				data[m_datapos] = conv(str[i]);
+			else
+				data[m_datapos] = str[i];
 			m_datapos++;
 			m_pc++;
 		}
