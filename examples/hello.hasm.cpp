@@ -50,10 +50,10 @@ void genis()
 	LPC("writeloop");
 	LDAx(L("teksti"));
 	JSR(0xFFD2);
-	INXa();
+	INX();
 	CPXi(strlen(hellotext));
 	BNE(L("writeloop"));
 
-	RTSa();
+	RTS();
 }
 

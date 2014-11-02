@@ -78,9 +78,9 @@ public:
 		return m_datapos;
 	}
 
-	virtual void add_statement(string opname, string adrname, value_t operand)
+	virtual void add_op(int opcode, value_t operand, int mode)
 	{
-		printf("i'm sorry but this doesn't work. sorry also that i'm so hackish :-D\n");
+
 	}
 
 	void add_byte(uint8_t byte)
@@ -133,8 +133,7 @@ public:
 	void align_to_page()
 	{
 		int bytesleft = 0x100 - (m_pc & 0xFF);
-		m_datapos += bytesleft;
-		m_pc += bytesleft;
+		reserve(bytesleft);
 	}
 
 	void reserve(int amount)
