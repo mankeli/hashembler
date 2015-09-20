@@ -19,21 +19,16 @@ using std::ofstream;
 
 // maybe these should be functions instead?
 #define SETSEG(_s) { set_segment(&_s); }
-#define SEG (*__current_seg)
-#define S(_n) S(_n)
-#define L(_n) (__current_seg->get_variable(_n))
+#define SEG (__current_seg)
 #define LPC(_n) { L(_n) = PC(); }
-#define Lx(_n,_i) (__current_seg->get_variable_idx(_n, _i))
-#define LPCx(_n,_i) { Lx(_n,_i) = PC(); }
 
 #define PC() (__current_seg->m_pc)
 
 #define SEGLABEL(_s,_n) (_s.get_variable(_n))
 #define SEGPC(_s) (_s.m_pc)
-#define OP(_code, _addr, _val) { __current_seg->add_statement(_code, _addr, _val); }
 #define B(_n) {__current_seg->add_byte(_n); }
 #define PAGE {__current_seg->align_to_page(); }
-#define PCNOW(_txt) {	printf("%s: %04X\n", _txt, PC()); }
+#define PRINTPOS(_txt) { printf("%s: %04X\n", _txt, PC()); }
 
 namespace hashembler
 {
@@ -48,15 +43,23 @@ static void set_segment(segment_c *seg)
 	__current_seg = seg;
 }
 
+static void stopassembly(const char *reason)
+{
+	printf("FATAL: %s\n", reason);
+	fflush(stdout);
+	exit(1);
+}
+
 };
 
 #include "segment_base.h"
 #include "segment_basic.h"
 #include "segment_asm.h"
 
+#include "context.h"
+
 namespace hashembler
 {
-
 static void assemble(void (*func)(void))
 {
 	cerr << "assembling..\n";

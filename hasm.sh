@@ -2,6 +2,7 @@
 set -e
 HASMROOT="`dirname $0`"
 HASMEXEC="/tmp/hasm"
-clang++ -o "$HASMEXEC" -std=c++11 "$@" -I"$HASMROOT/src/"
+clang++ -g -o "$HASMEXEC" -std=c++11 "$@" -I"$HASMROOT/src/"
 "$HASMEXEC"
-rm "$HASMEXEC"
+echo "$HASMEXEC"
+# rm "$HASMEXEC"

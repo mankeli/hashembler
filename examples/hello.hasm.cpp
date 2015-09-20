@@ -28,9 +28,11 @@ int main(int argc, char **argv)
 
 void genis()
 {
+	CTX("hello");
 	// assemble the basic stub
 	basicstub.begin(0x801);
-	basicstub.add_sys(666, SEGLABEL(initprg, "begin"));
+	basicstub.add_sys(666, L("begin"));
+	basicstub.add_sys(666, L("begin"));
 	basicstub.add_end();
 
 	// assemble program
@@ -39,7 +41,7 @@ void genis()
 
 	LPC("teksti")
 	const char *hellotext = "I HOPE YOU DIE :)";
-	SEG.add_string(hellotext);
+	S->add_string(hellotext);
 
 	LPC("begin");
 

@@ -22,6 +22,8 @@ public:
 		m_pc = pc;
 		m_datapos = 0;
 
+		get_variable("start") = m_pc;
+
 //		void set_segment(segment_c *seg);
 
 		set_segment(this);
@@ -57,6 +59,7 @@ public:
 		variables.push_back(variable_c(mulkku, 0xDEADFACE));
 		return variables.back().m_value;
 	}
+
 
 	virtual string dump()
 	{
@@ -130,6 +133,12 @@ public:
 		}
 	}
 
+	void setpc(value_t newpc)
+	{
+		int bytesleft = newpc - m_pc;
+		reserve(bytesleft);
+	}
+
 	void align_to_page()
 	{
 		int bytesleft = 0x100 - (m_pc & 0xFF);
@@ -154,10 +163,9 @@ public:
 		if (beginnew)
 		{
 			begin(load_addr);
-			get_variable("start") = load_addr;
 		}
 
-		get_variable(fn) = m_pc;
+//		get_variable(fn) = m_pc;
 
 		while(!feof(fp))
 		{

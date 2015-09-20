@@ -25,4 +25,15 @@ void static_hack()
 }
 
 
+static char encoder_scr(char byte) {
+		if((byte >= 'a') && (byte <= 'z'))
+				return((char)(byte - 96));      // shift uppercase down
+		if((byte >= '[') && (byte <= '_'))
+				return((char)(byte - 64));      // shift [\]^_ down
+		if(byte == '`')
+				return(64);     // shift ` down
+		if(byte == '@')
+				return(0);      // shift @ down
+		return(byte);
+}
 }

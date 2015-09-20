@@ -91,8 +91,6 @@ int inderp(float pos, int base, int nitems, int mmult)
 		return num2 * mmult;
 }
 
-value_t angle = 0x10;
-
 value_t cursinusx = 0x13;
 value_t cursinusy = 0x14;
 value_t cursinusbx = 0x15;
@@ -106,7 +104,7 @@ void makeroto()
 	int x,y;
 //	LDAi(0x8);
 	LDAz(cursinusbx);
-	CLCa();
+	CLC();
 	ADCi(cursinusby);
 	STAz(yaccu);
 //	LDAz(0x0a);
@@ -152,13 +150,13 @@ void makeroto()
 #endif
 
 		LDAz(yaccu);
-		CLCa();
+		CLC();
 		ADCz(cursinusy);
 		STAz(yaccu);
 
 		for (x = 0; x < 40; x++)
 		{
-//			CLCa()
+//			CLC()
 #if 1
 			if ((x % 10) == 9)
 			{
@@ -192,7 +190,7 @@ void makeroto()
 			if (cttab >= 0 && cttab <= 2)
 			{
 				ctnum += (2 - cttab) * 4;
-				TAXa();
+				TAX();
 				LDYx(L("cta1") + ctnum * 0x100);
 			}
 			else
@@ -217,12 +215,15 @@ void maketable(const char *label, int ar[], int num)
 
 void sixteenbitlut(const char *label, value_t andval, value_t tmppos, value_t target)
 {
+	value_t sblut = ZPS("sblut", 2);
 	ANDi(andval);
-	CLCa();
+	CLC();
 	ADCi(HB(L(label)))
-	STAz(tmppos + 1);
+	STAz(sblut + 1);
+	LDAz(tmppos);
+	STAz(sblut + 0)
 	LDYi(0);
-	LDAizy(tmppos)
+	LDAizy(sblut)
 	STAz(target);
 
 }
@@ -230,43 +231,68 @@ void sixteenbitlut(const char *label, value_t andval, value_t tmppos, value_t ta
 void irqroutine()
 {
 	LPC("irqrut");
-	PCNOW("irqrut");
+	PRINTPOS("irqrut");
 	LSR(0xd019);
 	//DEC(0xd020);
 
-	LDAz(angle + 0);
-	CLCa();
-	ADCi(0x01);
+	value_t angle = ZPS("angle", 2);
+	value_t angle2 = ZPS("angle2", 2);
+/*	LDAz(angle + 0);
+	CLC();
+	ADCi(0x01);*/
+	LDAz(angle2 + 1)
+	EORz(angle2 + 0)
+	ANDi(0x03);
+	ORAi(0x01);
+	CLC();
+	ADCz(angle + 0);
+	STAz(angle2 + 0);
+
 	STAz(angle + 0);
 
-	LDAz(angle + 2);
+	LDAz(angle + 1);
 	ADCi(0x00);
-	STAz(angle + 2);
-	PHAa();
-	PHAa();
-	PHAa();
+	STAz(angle + 1);
+	PHA();
+	PHA();
 
-	sixteenbitlut("sinex", 0x03, angle, cursinusx);
-	PLAa();
+	LDAz(angle + 1)
+	EORz(angle + 0)
+	ANDi(0x03);
+	ORAi(0x01);
+	CLC();
+	ADCz(angle2 + 0);
+	STAz(angle2 + 0);
+
+	LDAz(angle2 + 1);
+	ADCi(0x00);
+	STAz(angle2 + 1);
+
+
+	PHA();
+
+	sixteenbitlut("sinex", 0x03, angle2, cursinusx);
+	PLA();
+	sixteenbitlut("bsinex", 0x03, angle2, cursinusbx);
+
+	PLA();
 	sixteenbitlut("siney", 0x03, angle, cursinusy);
-	PLAa();
-	sixteenbitlut("bsinex", 0x03, angle, cursinusbx);
-	PLAa();
+	PLA();
 	sixteenbitlut("bsiney", 0x03, angle, cursinusby);
 
 	//DEC(0xd020);
 
-	PCNOW("rotostart");
+	PRINTPOS("rotostart");
 
 	makeroto();
 
-	PCNOW("rotoend");
+	PRINTPOS("rotoend");
 
 
 	//INC(0xd020);
 	//INC(0xd020);
 
-	RTIa();
+	RTI();
 
 	int i;
 	#define SINELEN (1024)
@@ -278,8 +304,8 @@ void irqroutine()
 	{
 //		xsine[i] = cos(i * (M_PI / 512.f)) * 7;
 //		ysine[i] = sin(i * (M_PI / 512.f)) * 5;
-		float sx = 2.0f;
-		float sy = 0.0f;
+		float sx = 12.0f;
+		float sy = 12.0f;
 
 		sx += cos(i * (2.0f * M_PI / SINELEN) + 2.0f) * 4.6f;
 		sx += cos(i * (-4.0f * M_PI / SINELEN) + 2.5f) * 3.9f;
@@ -291,7 +317,7 @@ void irqroutine()
 		sy += sin(i * (-4.0f * M_PI / SINELEN) + 2.5f) * 3.9f;
 		sy += sin(i * (8.0f * M_PI / SINELEN) + 0.43f) * 2.7f;
 		sy += sin(i * (16.0f * M_PI / SINELEN) + 4.43f) * 1.7f;
-		sy += sin(i * (32.0f * M_PI / SINELEN) + 5.43f) * 3.7f;
+		sy += sin(i * (32.0f * M_PI / SINELEN) + 5.43f) * 3.3f;
 
 		float px = (round(sy * 3.f + 0.f));
 		float py = (round(sx * 3.f + 0.f));
@@ -305,13 +331,13 @@ void irqroutine()
 	}
 
 	PAGE
-	PCNOW("sine alignment");
+	PRINTPOS("sine alignment");
 	value_t tablestart = PC();
 	maketable("sinex", xsine, SINELEN);
 	maketable("siney", ysine, SINELEN);
 	maketable("bsinex", bxsine, SINELEN);
 	maketable("bsiney", bysine, SINELEN);
-	PCNOW("sine end");
+	PRINTPOS("sine end");
 	printf("sinetables size: %i bytes\n", PC() - tablestart);
 
 	LPC("keptab")
@@ -324,8 +350,13 @@ void irqroutine()
 
 void genis()
 {
+	CTX("main")
+	RESERVE(0x00);
+	RESERVE(0x01);
+
+
 	basicstub.begin(0x801);
-	basicstub.add_sys(666, SEGLABEL(initprg, "begin"));
+	basicstub.add_sys(666, L("begin"));
 	basicstub.add_end();
 
 	initprg.begin(SEGPC(basicstub));
@@ -333,9 +364,9 @@ void genis()
 
 	irqroutine();
 	LPC("begin");
-	PCNOW("pc at begin");
+	PRINTPOS("pc at begin");
 
-	SEIa();
+	SEI();
 	killirq();
 	LDAi(0x35);
 	STAz(1);
@@ -360,12 +391,12 @@ void genis()
 		EORi(0x80);
 		STAx(0x400 + i * 0x100);
 	}
-	INXa();
+	INX();
 	BNE(L("copyloop"));
 
 
 
-	CLIa();
+	CLI();
 
 	printf("pc now: %04X\n", PC());
 
@@ -413,7 +444,7 @@ void genis()
 	MOV8i(0xD01A, 0x01);
 	MOV8i(0xD012, 0x20);
 	MOV8i(0xD011, 0x9B);
-	CLIa();
+	CLI();
 */
 }
 
