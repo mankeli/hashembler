@@ -27,6 +27,7 @@ using std::ofstream;
 #define SEGLABEL(_s,_n) (_s.get_variable(_n))
 #define SEGPC(_s) (_s.m_pc)
 #define B(_n) {__current_seg->add_byte(_n); }
+#define W(_n) {__current_seg->add_byte(LB(_n)); __current_seg->add_byte(HB(_n)); }
 #define PAGE {__current_seg->align_to_page(); }
 #define PRINTPOS(_txt) { printf("%s: %04X\n", _txt, PC()); }
 
