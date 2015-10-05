@@ -20,7 +20,6 @@ using std::ofstream;
 // maybe these should be functions instead?
 #define SETSEG(_s) { set_segment(&_s); }
 #define SEG (__current_seg)
-#define LPC(_n) { L(_n) = PC(); }
 
 #define PC() (__current_seg->m_pc)
 

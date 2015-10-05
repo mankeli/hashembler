@@ -194,6 +194,19 @@ public:
 		return ctxptr->get_variable(name, size);
 	}
 
+
+	value_t &get_variable_va(const char *format, int size, ...)
+	{
+		char tmpname[1024];
+   		va_list args;
+   		va_start(args, size);
+   		int r = vsprintf(tmpname, format, args);
+   		va_end(args);
+
+		return get_variable(tmpname, size);
+	}
+
+
 };
 
 _ctx_handler_t _ctx_handler;
@@ -223,5 +236,10 @@ public:
 #define CTX(_name) _ctxhelper_t __ctx(_name);
 #define ZP(_name) (_ctx_handler.get_variable(_name, 1))
 #define ZPS(_name, _size) (_ctx_handler.get_variable(_name, _size))
-#define L(_name) (_ctx_handler.get_variable(_name, 0))
+//#define L(_name) (_ctx_handler.get_variable(_name, 0))
+#define L(_name, ...) (_ctx_handler.get_variable_va(_name, 0,  ##__VA_ARGS__))
 #define RESERVE(_pos) { _ctx_handler.reserve(_pos); }
+
+//#define LPC(_n) { L(_n) = PC(); }
+#define LPC(_n, ...) { L(_n, ##__VA_ARGS__) = PC(); }
+
