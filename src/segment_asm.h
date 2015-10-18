@@ -15,6 +15,7 @@ public:
 		if (g_pass > 0 && data[m_datapos] != opcode)
 		{
 			cerr << f("hmm. opcode mismatch at pc 0x%04X\n", m_pc);
+			exit(1);
 			return;
 		}
 
