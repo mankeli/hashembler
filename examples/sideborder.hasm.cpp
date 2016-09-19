@@ -12,15 +12,17 @@ segment_asm_c initprg;
 
 void genis()
 {
+	CTX("");
+
 	basicstub.begin(0x801);
-	basicstub.add_sys(666, SEGLABEL(initprg, "begin"));
+	basicstub.add_sys(666, L("begin"));
 	basicstub.add_end();
 
 	initprg.begin(SEGPC(basicstub));
 	set_segment(&initprg);
 
 	LPC("begin");
-	SEIa();
+	SEI();
 	LPC("loop1");
 	LDAi(0x1b);
 	STA(0xd011);
@@ -36,17 +38,17 @@ void genis()
 	STA(0xd011);
 
 	// waitings
-	NOPa();
-	NOPa();
-	NOPa();
-	NOPa();
-	NOPa();
+	NOP();
+	NOP();
+	NOP();
+	NOP();
+	NOP();
 //	BIT(0xea);
 	BITz(0xea);
 
 	LDXi(0);
 	LPC("loop2");
-	CLCa();
+	CLC();
 	LDA(0xd012);
 	ADCi(0x4);
 	ANDi(0x7);
@@ -64,14 +66,14 @@ void genis()
 	int i;
 	for (i = 0; i < 28; i+=2)
 	{
-		NOPa();
+		NOP();
 	}
 //	INC(0xd021);
 
 	DEC(0xd016);
 	INC(0xd016);
 
-	INXa();
+	INX();
 	CPXi(0x80);
 	BCC(L("loop2"));
 

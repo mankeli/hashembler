@@ -31,29 +31,51 @@ void genis()
 	CTX("hello");
 	// assemble the basic stub
 	basicstub.begin(0x801);
-	basicstub.add_sys(666, L("begin"));
-	basicstub.add_sys(666, L("begin"));
+	basicstub.add_sys(666, L("begin1"));
+	basicstub.add_sys(667, L("begin2"));
 	basicstub.add_end();
 
 	// assemble program
 	initprg.begin(SEGPC(basicstub));
 	set_segment(&initprg);
 
-	LPC("teksti")
-	const char *hellotext = "I HOPE YOU DIE :)";
-	S->add_string(hellotext);
+	LPC("teksti1")
+	const char *hellotext1 = "HELLO ";
+	SEG->add_string(hellotext1);
 
-	LPC("begin");
+	LPC("teksti2")
+	const char *hellotext2 = "KITTY";
+	SEG->add_string(hellotext2);
 
+
+	LPC("begin1");
 	// output cool text using kernal routines
 	LDXi(3);
 	JSR(0xFFC9);
+
 	LDXi(0);
 	LPC("writeloop");
-	LDAx(L("teksti"));
+	LDAx(L("teksti1"));
 	JSR(0xFFD2);
 	INX();
-	CPXi(strlen(hellotext));
+	CPXi(strlen(hellotext1));
+	BNE(L("writeloop"));
+
+	RTS();
+
+
+
+	LPC("begin2");
+	// output cool text using kernal routines
+	LDXi(3);
+	JSR(0xFFC9);
+
+	LDXi(0);
+	LPC("writeloop");
+	LDAx(L("teksti2"));
+	JSR(0xFFD2);
+	INX();
+	CPXi(strlen(hellotext2));
 	BNE(L("writeloop"));
 
 	RTS();

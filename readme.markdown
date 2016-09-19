@@ -12,18 +12,18 @@ Currently the assembler portion is implemented as a C++ header file,
 and CPP macros are used to convert 6502 syntax into function calls.
 
 This is mainly meant for my own use, so the design might change suddenly!
-(But it has remained quite stable since 2014)
+(But it has remained quite stable since fixing the opcode syntax in 2014)
 
 
 Usage
 -----
 Look at files in examples/ for an example.
-Basicly all 6502 mnemonics _should_ work as expected,
-and any normal c++ expression and/or function call can be used
-inside the 6502 code.
+The syntax might seem to be quite different from traditional 6502 assemblers, but
+actually it's main difference is the parameter and the fact that the addressing mode
+is coded into the mnemonic itself.
 
-Basicly the assembler does two passes, and runs all the C++ code
-with both passes. If you are doing something resource-intensive,
+Basicly the assembler does as many passes it needs to resolve all labels,
+and runs all the C++ code on each pass. If you are doing something resource-intensive,
 you might perhaps want to look at the hashembler::g_pass variable, or
 do it in main().
 
@@ -38,11 +38,10 @@ Contact
 ------------
 mangelis / #LHB @ Ircnet
 
-Greetings
+Greetings and thanks
 ------------
-
-Slammer/Camelot for the KickAssembler. It's awful macro language was the
-inspiration for this. ;)
+Slammer/Camelot for the KickAssembler. It's awful macro language was the reason I started this. :)
+Graham/Oxyron and Visual6502 for a opcode lists which were used to generate the macros.
 
 -----
 
