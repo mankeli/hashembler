@@ -6,13 +6,13 @@ Introduction
 ------------
 
 It is your normal everyday 6502 assembler, but with fully-featured C++11
-compiler as it's preprocessor.
+compiler as it's preprocessor. ;)
 
 Currently the assembler portion is implemented as a C++ header file,
-and ~~a python script is used to convert standard 6502 syntax into function calls.~~
-CPP macros are used to convert 6502 syntax into function calls.
+and CPP macros are used to convert 6502 syntax into function calls.
 
-Several parts of the design are subject to change.
+This is mainly meant for my own use, so the design might change suddenly!
+(But it has remained quite stable since 2014)
 
 
 Usage
@@ -24,10 +24,9 @@ inside the 6502 code.
 
 Basicly the assembler does two passes, and runs all the C++ code
 with both passes. If you are doing something resource-intensive,
-you might perhaps want to look at the hashembler::g_pass variable.
+you might perhaps want to look at the hashembler::g_pass variable, or
+do it in main().
 
-Compilation is done by including the hashembler.h and using your
-favourite C++11 compiler.
 
 Requirements
 ------------
@@ -37,16 +36,16 @@ Requirements
 
 Contact
 ------------
-manqeloque / #LHB @ Ircnet
+mangelis / #LHB @ Ircnet
 
 Greetings
 ------------
 
-Slammer/Camelot for the amazing KickAssembler. It's macro syntax was the
-inspiration for this.
+Slammer/Camelot for the KickAssembler. It's awful macro language was the
+inspiration for this. ;)
 
 -----
 
-Copyright (c) 2013-2014 Mankeli/Extend^LHB    
+Copyright (c) 2013-2016 Mankeli/Extend^LHB    
 released under the MIT license
 
