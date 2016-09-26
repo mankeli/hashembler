@@ -28,7 +28,7 @@ using std::ofstream;
 #define B(_n) {__current_seg->add_byte(_n); }
 #define W(_n) {__current_seg->add_byte(LB(_n)); __current_seg->add_byte(HB(_n)); }
 #define PAGE {__current_seg->align_to_page(); }
-#define PRINTPOS(_txt) { printf("%s: %04X\n", _txt, PC()); }
+#define PRINTPOS(_txt, ...) { printf(_txt": %04X\n", ##__VA_ARGS__, PC()); }
 
 namespace hashembler
 {
