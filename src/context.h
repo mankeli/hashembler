@@ -76,7 +76,8 @@ public:
 			initval = alloc(name, size);
 		else
 		{
-			printf("size 0 variable undefined: '%s'\n", name.c_str());
+			// TODO: make some "debug" flag which enables this line
+			// printf("size 0 variable undefined: '%s'\n", name.c_str());
 			g_pass_vars_left++;
 		}
 

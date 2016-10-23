@@ -84,9 +84,9 @@ static void make_prg(string fn, value_t loadaddr, list<segment_c *> segs)
 	ofstream file(fn.c_str(), ios::binary);
 	value_t curpc = loadaddr;
 
-	// detect segment overlaps more wisely
+	// TODO: detect segment overlaps more wisely
 
-	cerr << "writing results to " << fn << "\n";
+	cerr << "writing .prg to " << fn << "\n";
 	cerr << f("writing begins at %X\n", curpc);
 
 	if (file.is_open())
@@ -151,5 +151,54 @@ static void make_prg(string fn, value_t loadaddr, list<segment_c *> segs)
 		file.close();
 	}
 }
+
+
+static void make_mprg(string fn, list<segment_c *> segs)
+{
+	ofstream file(fn.c_str(), ios::binary);
+
+	// TODO: detect segment overlaps!
+
+	cerr << "writing .mprg to " << fn << "\n";
+
+	if (file.is_open())
+	{
+		uint8_t byte;
+
+		for (auto &it: segs)
+		{
+			if (it)
+			{
+				value_t loadaddr = it->m_startpc;
+				value_t length = it->m_datapos;
+
+				cerr << f("  writing seg: 0x%04X bytes to 0x%04X\n", length, loadaddr);
+
+				byte = (length >> 0) & 0xFF;
+				file.write((const char *)&byte, 1);
+				byte = (length >> 8) & 0xFF;
+				file.write((const char *)&byte, 1);
+
+
+				byte = (loadaddr >> 0) & 0xFF;
+				file.write((const char *)&byte, 1);
+				byte = (loadaddr >> 8) & 0xFF;
+				file.write((const char *)&byte, 1);
+
+
+
+				file.write((const char *)it->data.data(), length);
+			}
+		}
+
+		byte = 0;
+		file.write((const char *)&byte, 1);
+		file.write((const char *)&byte, 1);
+
+
+		file.close();
+	}
+}
+
 
 };
