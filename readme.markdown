@@ -40,11 +40,13 @@ mangelis / #LHB @ Ircnet
 
 Greetings and thanks
 ------------
-Slammer/Camelot for the KickAssembler. It's awful macro language was the reason I started this. :)
+Slammer/Camelot for the KickAssembler. It's powerfulness combined to a awful macro language was the reason why I started this. :)
+
 Graham/Oxyron and Visual6502 for a opcode lists which were used to generate the macros.
 
 -----
 
 Copyright (c) 2013-2016 Mankeli/Extend^LHB    
+
 released under the MIT license
 
