@@ -35,7 +35,7 @@ public:
 			int diff = operand - (m_pc + 1);
 			if (diff > 127 || diff < -128)
 			{
-//				cerr << f("branch är liian kaukana %04X to %04X\n", operand, m_pc);
+				cerr << f("branch is too far. %04X to %04X\n", operand, m_pc);
 				diff = 0;
 			}
 

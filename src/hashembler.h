@@ -62,11 +62,11 @@ namespace hashembler
 {
 static void assemble(void (*func)(void))
 {
-	cerr << "assembling..\n";
+	cerr << "assemble(): Starting assembly..\n";
 	int i;
 	for (i = 0;; i++)
 	{
-		cerr << f("now entering pass %i\n", i);;
+		cerr << f(" - now entering pass %i - \n", i);;
 		g_pass = i;
 		g_pass_vars_left = 0;
 		srand(0);
@@ -74,7 +74,10 @@ static void assemble(void (*func)(void))
 	//	cerr << "\n";
 		cerr << f("issues left: %i\n", g_pass_vars_left);
 		if (g_pass_vars_left == 0)
+		{
+			cerr << "assemble(): Assembly finished..\n";
 			break;
+		}
 	}
 }
 
@@ -86,8 +89,8 @@ static void make_prg(string fn, value_t loadaddr, list<segment_c *> segs)
 
 	// TODO: detect segment overlaps more wisely
 
-	cerr << "writing .prg to " << fn << "\n";
-	cerr << f("writing begins at %X\n", curpc);
+	cerr << "make_prg(): writing .prg to " << fn << "\n";
+	cerr << f("  writing begins at %X\n", curpc);
 
 	if (file.is_open())
 	{
@@ -142,12 +145,12 @@ static void make_prg(string fn, value_t loadaddr, list<segment_c *> segs)
 			}
 			else
 			{
-				cerr << f("uh oh. segment overlap at pos 0x%X (lowest segment is 0x%X)\n", curpc, lowest_startpc);
+				cerr << f("  uh oh. segment overlap at pos 0x%X (lowest segment is 0x%X)\n", curpc, lowest_startpc);
 				break;
 			}
 
 		}
-		cerr << f("writing ended at %X\n", curpc);
+		cerr << f("  writing ended at %X\n", curpc);
 		file.close();
 	}
 }
@@ -172,7 +175,7 @@ static void make_mprg(string fn, list<segment_c *> segs)
 				value_t loadaddr = it->m_startpc;
 				value_t length = it->m_datapos;
 
-				cerr << f("  writing seg: 0x%04X bytes to 0x%04X\n", length, loadaddr);
+				cerr << f("  writing seg: 0x%04X bytes to 0x%04X-0x%04X\n", length, loadaddr, loadaddr+length-1);
 
 				byte = (length >> 0) & 0xFF;
 				file.write((const char *)&byte, 1);

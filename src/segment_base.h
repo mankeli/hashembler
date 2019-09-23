@@ -174,6 +174,54 @@ public:
 		fclose(fp);
 		return false;
 	}
+
+
+	bool load_psid(string fn, bool beginnew)
+	{
+		FILE *fp = fopen(fn.c_str(), "rb");
+		if (!fp)
+			return true;
+
+		uint16_t load_addr;
+		uint16_t init_addr;
+		uint16_t play_addr;
+		fseek(fp, 8, SEEK_SET);
+		fread(&load_addr, 2, 1, fp);
+		fread(&init_addr, 2, 1, fp);
+		fread(&play_addr, 2, 1, fp);
+
+		cerr << f("psid dada: %04X %04X %04X\n", load_addr, init_addr, play_addr);
+
+		if (beginnew)
+		{
+			begin(load_addr);
+		}
+
+// 		remember the time when you neglected me
+#if 0
+
+		uint8_t psidheader[4];
+		header[0] = 0x50;
+		header[1] = 0x53;
+		header[2] = 0x49;
+		header[3] = 0x44;
+
+		uint3
+		fseek(fp, 0, SEEK_SET);
+		fread(&load_addr, 2, 1, fp);
+#endif
+
+		get_variable(fn) = m_pc;
+
+		fseek(fp, 8, SEEK_SET);
+		while(!feof(fp))
+		{
+			add_byte(fgetc(fp));
+		}
+		fclose(fp);
+		return false;
+
+	}
 };
 
 };
