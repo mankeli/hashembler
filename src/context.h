@@ -242,5 +242,6 @@ public:
 #define RESERVE(_pos) { _ctx_handler.reserve(_pos); }
 
 //#define LPC(_n) { L(_n) = PC(); }
+
 #define LPC(_n, ...) { L(_n, ##__VA_ARGS__) = PC(); }
 

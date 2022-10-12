@@ -56,7 +56,11 @@ static void stopassembly(const char *reason)
 #include "segment_basic.h"
 #include "segment_asm.h"
 
+#ifdef __HASHEMBLER_NEWCONTEXT
+#include "context2.h"
+#else
 #include "context.h"
+#endif
 
 namespace hashembler
 {

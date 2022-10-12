@@ -119,6 +119,13 @@ public:
 		}
 	}
 
+	void add_string_noend(const char *str)
+	{
+		add_string( str, strlen(str), (enc_f)NULL );
+
+	}
+
+
 	void add_string(const char *str, int len, enc_f conv)
 	{
 		int i;

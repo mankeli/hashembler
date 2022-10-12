@@ -36,6 +36,7 @@ public:
 			if (diff > 127 || diff < -128)
 			{
 				cerr << f("branch is too far. %04X to %04X\n", operand, m_pc);
+				g_pass_vars_left++;
 				diff = 0;
 			}
 

@@ -149,3 +149,16 @@
 #define SBCy(_val) { __current_seg->add_op(0xF9, _val, 2); }
 #define SBCx(_val) { __current_seg->add_op(0xFD, _val, 2); }
 #define INCx(_val) { __current_seg->add_op(0xFE, _val, 2); }
+
+/*
+
+
+AXS abcd        ;8F cd ab    ;No. Cycles= 4
+AXS ab          ;87 ab       ;            3
+AXS ab,Y        ;97 ab       ;            4
+AXS (ab,X)      ;83 ab       ;            6
+*/
+#define SAX(_val) { __current_seg->add_op(0x8F, _val, 2); }
+#define SAXz(_val) { __current_seg->add_op(0x87, _val, 1); }
+#define SAXy(_val) { __current_seg->add_op(0x97, _val, 1); }
+#define SAXizx(_val) { __current_seg->add_op(0x83, _val, 1); }
